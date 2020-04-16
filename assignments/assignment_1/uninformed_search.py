@@ -27,15 +27,11 @@ args = parser.parse_args()
 
 #set up the Node class to store frontier and explored queue (list)
 class Node:
-    def __init__(self, parent, state, cost, successor):
-        self.parent = parent
-        self.state = state
-        self.cost = cost
-        self.successor = successor
-
-    def add_neighbor(self, node):
-        if node not in self.neighbors:
-            self.neighbors.append(node)
+    def __init__(self, parent_node, State, successor_statement):
+        self.parent_node = parent_node
+        self.state = State
+        self.cost = 0
+        self.successor_statement = successor_statement
 
 # state class is for the status of left and right banks
 class State:
@@ -65,23 +61,97 @@ def valid_check(State):
         return False 
 
 
-def successor(node):
-    # non-boat bank = no successor
-    if bank[2] == 0:
-        print("this bank doesn't have a boat for loading animals")
-        return
+def successor(parent_node):
+    # set state to check boat location and create successor set to store
+    state = parent_node.state
+    successors = set()
+
+    # if boat is on right bank
+    if state.boat_location == True:
     
-    # 1. put one chicken in the boat
-    
+        # 1. put one chicken in the boat
+        r_succ_1 = State(state.chicken_right - 1, state.wolf_right, state.chicken_left + 1, state.wolf_left, False)
+        
+        # check the successor is valid
+        if valid_check(r_succ_1) == True:
+            successors.add(Node(parent_node, r_succ_1, "put one chicken in the boat"))
+        
+        # 2. put two chicken in the boat
+        r_succ_2 = State(state.chicken_right - 2, state.wolf_right, state.chicken_left + 2, state.wolf_left, False)
+        
+        # check the successor is valid
+        if valid_check(r_succ_2) == True:
+            successors.add(Node(parent_node, r_succ_2, "put two chicken in the boat"))
+
+        # 3. put one wolf in the boat
+        r_succ_3 = State(state.chicken_right, state.wolf_right - 1, state.chicken_left, state.wolf_left + 1, False)
+        
+        # check the successor is valid
+        if valid_check(r_succ_3) == True:
+            successors.add(Node(parent_node, r_succ_3, "put one wolf in the boat"))
+
+        # 4. put one wolf and one chicken in the boat
+        r_succ_4 = State(state.chicken_right - 1, state.wolf_right - 1, state.chicken_left + 1, state.wolf_left + 1, False)
+        
+        # check the successor is valid
+        if valid_check(r_succ_4) == True:
+            successors.add(Node(parent_node, r_succ_4, "put one wolf and one chicken in the boat"))
+
+        # 5. put two wolves in the boat
+        r_succ_5 = State(state.chicken_right, state.wolf_right - 2, state.chicken_left, state.wolf_left + 2, False)
+        
+        # check the successor is valid
+        if valid_check(r_succ_5) == True:
+            successors.add(Node(parent_node, r_succ_5, "put two wolves in the boat"))
+
+    # if boat is on left bank
+    else:  
+        # 1. put one chicken in the boat
+        l_succ_1 = State(state.chicken_right + 1, state.wolf_right, state.chicken_left - 1, state.wolf_left, True)
+        
+        # check the successor is valid
+        if valid_check(l_succ_1) == True:
+            successors.add(Node(parent_node, l_succ_1, "put one chicken in the boat"))
+        
+        # 2. put two chicken in the boat
+        l_succ_2 = State(state.chicken_right + 2, state.wolf_right, state.chicken_left - 2, state.wolf_left, True)
+        
+        # check the successor is valid
+        if valid_check(l_succ_2) == True:
+            successors.add(Node(parent_node, l_succ_2, "put two chicken in the boat"))
+
+        # 3. put one wolf in the boat
+        l_succ_3 = State(state.chicken_right, state.wolf_right + 1, state.chicken_left, state.wolf_left - 1, True)
+        
+        # check the successor is valid
+        if valid_check(l_succ_3) == True:
+            successors.add(Node(parent_node, l_succ_3, "put one wolf in the boat"))
+
+        # 4. put one wolf and one chicken in the boat
+        l_succ_4 = State(state.chicken_right + 1, state.wolf_right + 1, state.chicken_left - 1, state.wolf_left - 1, True)
+        
+        # check the successor is valid
+        if valid_check(l_succ_4) == True:
+            successors.add(Node(parent_node, l_succ_4, "put one wolf and one chicken in the boat"))
+
+        # 5. put two wolves in the boat
+        l_succ_5 = State(state.chicken_right, state.wolf_right + 2, state.chicken_left, state.wolf_left - 2, True)
+        
+        # check the successor is valid
+        if valid_check(l_succ_5) == True:
+            successors.add(Node(parent_node, l_succ_5, "put two wolves in the boat"))    
+
+    return successors
+
 
 def bfs(init_state, goal_state):
-    #initialize the frontier using the initial state of the problem (using python list)
+    #initialize the frontier  using the initial state of the problem (using python list)
     frontier = []
-    #frontier.append(Node()
+    frontier.append(Node(None, init_state, None))
+
     #initialize the explored set to be empty
     explored = set()
-
-    return 0
+    num_expanded = 0
 
 def dfs():
     return 0
@@ -128,7 +198,7 @@ if __name__ == "__main__":
 
     # apply algorithms depending on the user's mode input
     if args.mode == "bfs":
-        result = bfs()
+        result = bfs(init_state, goal_state)
     elif args.mode == "dfs":
         result = dfs()
     elif args.mode == "iddfs":
