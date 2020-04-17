@@ -156,9 +156,31 @@ def bfs(init_state, goal_state):
 def dfs():
     return 0
 
-def iddfs():
+# Page 88~89 - Iterative Deepening Depth-First Search
+def dls(problem, limit):
     return 0
 
+def rdls(node, problem, limit):
+    if problem = goal:
+        return solution(node)
+    elif limit = 0:
+        return cutoff()
+    else:
+        is_cutoff = false
+        for i in range(0, limit):
+            #do recursive dls
+            # in this for or while 
+    return 0
+
+def iddfs(problem):
+    depth = 0
+    infi = math.inf
+    for i in range(0, infi):
+        if(dls(problem, depth)):
+            return true
+    return false
+
+# Page 99 - A* Search (Recursive Best-First Search)
 def astar():
     return 0
 
