@@ -30,8 +30,23 @@ class Node:
     def __init__(self, parent_node, State, successor_statement):
         self.parent_node = parent_node
         self.state = State
-        self.cost = 0
+        self.depth = 0
         self.successor_statement = successor_statement
+    
+    def __repr__(self):
+        return str(self.state)
+
+    def __eq__(self, other):
+        print("Node.__eq__ is called")
+        if isinstance(other, Node):
+            return self.depth == other.depth
+        else:
+            return False
+
+    def __hash__(self):
+        print("Node.__hash__ is called")
+        return self.state.__hash__()
+
 
 # state class is for the status of left and right banks
 class State:
@@ -44,7 +59,15 @@ class State:
 
     def __repr__(self):
         return ("Right bank: {0} chicken, {1} wolf \nLeft bank: {2} chicken, {3} wolf \nboat location: {4} (True: Right, False: Left)".format(self.chicken_right, self.wolf_right, self.chicken_left, self.wolf_left, self.boat_location))
-     
+
+    def __eq__(self, other):
+        print("State.__eq__ is called")
+        return self.__dict__ == other.__dict__
+
+    def __hash__(self):
+        print("State.__hash__ is called")
+        return hash(tuple(sorted(self.__dict__.items())))
+
 def find_boat(bank):
     # True for right
     if bank[2] == 1:
@@ -143,15 +166,33 @@ def successor(parent_node):
 
     return successors
 
-
 def bfs(init_state, goal_state):
-    #initialize the frontier  using the initial state of the problem (using python list)
+    #initialize the frontier using the initial state of the problem (using python list)
     frontier = []
     frontier.append(Node(None, init_state, None))
 
     #initialize the explored set to be empty
     explored = set()
     num_expanded = 0
+
+    while len(frontier) != 0:
+        #first in first out queue as BFS
+        cur_node = frontier[0]
+        frontier.pop(0)
+
+        explored.add(cur_node)
+        succs = successor(cur_node)
+        print(len(succs))
+        for succ_node in succs:
+            if succ_node in explored:
+                num_expanded += 1
+                print(num_expanded)
+            if succ_node not in explored:
+                # if succ_node state condition has the same with goal state then done !
+                if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left:
+                    return succ_node, num_expanded
+                frontier.append(succ_node)
+
 
 def dfs():
     return 0
@@ -161,13 +202,13 @@ def dls(problem, limit):
     return 0
 
 def rdls(node, problem, limit):
-    if problem = goal:
+    if problem == goal:
         return solution(node)
-    elif limit = 0:
+    elif limit == 0:
         return cutoff()
     else:
-        is_cutoff = false
-        for i in range(0, limit):
+        is_cutoff = False
+    #    for i in range(0, limit):
             #do recursive dls
             # in this for or while 
     return 0
@@ -177,12 +218,33 @@ def iddfs(problem):
     infi = math.inf
     for i in range(0, infi):
         if(dls(problem, depth)):
-            return true
-    return false
+            return True
+    return False
 
 # Page 99 - A* Search (Recursive Best-First Search)
 def astar():
     return 0
+
+def action_sequence(node):
+    actions = []
+    while node != None:
+        actions.append(node.successor_statement)
+        node = node.parent_node
+    return list(reversed(actions))
+
+def print_path(path):
+    result = ""
+    path_statements = []
+
+    while path != None:
+        path_statements.append(path.successor_statement)
+        path = path.parent_node
+
+    for statement in path_statements:
+        if statement != None:
+            print(statement)
+    
+    print("total steps: %d" % (len(path_statements) - 1))
 
 if __name__ == "__main__":
     # open file and then get data
@@ -198,8 +260,8 @@ if __name__ == "__main__":
     init_boat_location = find_boat(list(init_right_bank + init_left_bank))
 
     # open file and then get data
-    with open(args.goal_state_file, "r") as f_1:
-        for i, line in enumerate(f_1):
+    with open(args.goal_state_file, "r") as f_2:
+        for i, line in enumerate(f_2):
             if i == 0:
                 #first line is left bank (chicken, wolves, boat)
                 goal_left_bank = list(map(int, line.strip().split(',')))
@@ -220,12 +282,15 @@ if __name__ == "__main__":
 
     # apply algorithms depending on the user's mode input
     if args.mode == "bfs":
-        result = bfs(init_state, goal_state)
+        path, num_expanded = bfs(init_state, goal_state)
     elif args.mode == "dfs":
-        result = dfs()
+        path, num_expanded = dfs()
     elif args.mode == "iddfs":
         result = iddfs()
     elif args.mode == "astar":
         result = astar()
-            
-    
+
+    print("\n-- your mode is %s --" % args.mode)
+    print("the %s algorithm expened %d nodes" % (args.mode, num_expanded))
+    print("-- solution path --")
+    print_path(path)
