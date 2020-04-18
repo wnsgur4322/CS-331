@@ -234,6 +234,7 @@ def action_sequence(node):
 
 def print_path(path):
     path_statements = []
+    solution_path = ""
 
     while path != None:
         path_statements.append(path.successor_statement)
@@ -241,9 +242,11 @@ def print_path(path):
 
     for statement in path_statements:
         if statement != None:
+            solution_path += statement + "\n"
             print(statement)
     
     print("total steps: %d" % (len(path_statements) - 1))
+    return solution_path
 
 if __name__ == "__main__":
     # open file and then get data
@@ -290,6 +293,12 @@ if __name__ == "__main__":
         result = astar()
 
     print("\n-- your mode is %s --" % args.mode)
-    print("the %s algorithm expened %d nodes" % (args.mode, num_expanded))
+    print("the %s algorithm expeneds %d nodes" % (args.mode, num_expanded))
     print("-- solution path --")
     print_path(path)
+
+    with open("result.txt", "w") as f_3:
+        f_3.write("-- your mode is %s --\n" % args.mode)
+        f_3.write("the %s algorithm expeneds %d nodes\n" % (args.mode, num_expanded))
+        f_3.write("-- solution path --\n")
+        f_3.write(print_path(path))
