@@ -233,7 +233,6 @@ def action_sequence(node):
     return list(reversed(actions))
 
 def print_path(path):
-    result = ""
     path_statements = []
 
     while path != None:
