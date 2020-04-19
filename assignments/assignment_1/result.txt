@@ -1,14 +1,474 @@
--- your mode is bfs --
-the bfs algorithm expeneds 32 nodes
+-- your mode is dfs --
+the dfs algorithm expended 2740 nodes
 -- solution path --
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
 put one wolf and one chicken in the boat
 put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
 put two wolves in the boat
 put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
 put two chicken in the boat
 put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put two wolves in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one chicken in the boat
+put one wolf and one chicken in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put two wolves in the boat
+put one wolf in the boat
+put one chicken in the boat
+put one wolf in the boat
 put two chicken in the boat
 put one wolf in the boat
 put two wolves in the boat
-put one wolf in the boat
-put two wolves in the boat
+put two chicken in the boat
+put one wolf and one chicken in the boat
+put one chicken in the boat
+put two chicken in the boat

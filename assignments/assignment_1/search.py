@@ -37,14 +37,14 @@ class Node:
         return str(self.state)
 
     def __eq__(self, other):
-        print("Node.__eq__ is called")
+        #print("Node.__eq__ is called")
         if isinstance(other, Node):
             return self.depth == other.depth
         else:
             return False
 
     def __hash__(self):
-        print("Node.__hash__ is called")
+        #print("Node.__hash__ is called")
         return self.state.__hash__()
 
 
@@ -61,11 +61,11 @@ class State:
         return ("Right bank: {0} chicken, {1} wolf \nLeft bank: {2} chicken, {3} wolf \nboat location: {4} (True: Right, False: Left)".format(self.chicken_right, self.wolf_right, self.chicken_left, self.wolf_left, self.boat_location))
 
     def __eq__(self, other):
-        print("State.__eq__ is called")
+        #print("State.__eq__ is called")
         return self.__dict__ == other.__dict__
 
     def __hash__(self):
-        print("State.__hash__ is called")
+        #print("State.__hash__ is called")
         return hash(tuple(sorted(self.__dict__.items())))
 
 def find_boat(bank):
@@ -77,7 +77,7 @@ def find_boat(bank):
         return False
 
 def valid_check(State):
-    if State.chicken_left >= 0 and State.chicken_right >= 0 and State.wolf_left >= 0 and State.chicken_right >= 0:
+    if State.chicken_left >= 0 and State.chicken_right >= 0 and State.wolf_left >= 0 and State.wolf_right >= 0:
         if (State.chicken_right >= State.wolf_right or State.chicken_right == 0) and (State.chicken_left >= State.wolf_left or State.chicken_left == 0):
             return True
     else:
@@ -128,7 +128,7 @@ def successor(parent_node):
             successors.add(Node(parent_node, r_succ_5, "put two wolves in the boat"))
 
     # if boat is on left bank
-    else:  
+    elif state.boat_location == False:  
         # 1. put one chicken in the boat
         l_succ_1 = State(state.chicken_right + 1, state.wolf_right, state.chicken_left - 1, state.wolf_left, True)
         
@@ -180,59 +180,142 @@ def bfs(init_state, goal_state):
         cur_node = frontier[0]
         frontier.pop(0)
 
+        # add initial node at explored list
         explored.add(cur_node)
+        # create a set of successor for the puzzle
         succs = successor(cur_node)
-        print(len(succs))
+
         for succ_node in succs:
-            if succ_node in explored:
-                num_expanded += 1
-                print(num_expanded)
+            num_expanded += 1
+            # if the element node of the set of successor is not included in explored list, then compare the node with goal state
             if succ_node not in explored:
                 # if succ_node state condition has the same with goal state then done !
-                if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left:
+                if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left and succ_node.state.boat_location == False:
                     return succ_node, num_expanded
+                # add new succesor node on frontier
                 frontier.append(succ_node)
+    
+    return False, num_expanded
 
+def dfs(init_state, goal_state):
+    #initialize the frontier and input a node of the initial state
+    frontier = []
+    frontier.append(Node(None, init_state, None))
 
-def dfs():
-    return 0
+    #initialize the explored set to be empty
+    explored = set()
+    num_expanded = 0
+
+    while frontier :
+        #Last in first out queue as DFS
+        cur_node = frontier[len(frontier) - 1]
+        frontier.pop()
+
+        # add initial node at explored list
+        explored.add(cur_node)
+        # create a set of successor for the puzzle
+        succs = successor(cur_node)
+        print(len(succs))
+        
+        for succ_node in succs:
+            num_expanded += 1
+            # if the element node of the set of successor is not included in explored list, then compare the node with goal state
+            if succ_node not in explored:
+                # if succ_node state condition has the same with goal state then done !
+                if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left and succ_node.state.boat_location == False:
+                    return succ_node, num_expanded
+                # add new succesor node on frontier
+                frontier.append(succ_node)
+    
+    return False, num_expanded
 
 # Page 88~89 - Iterative Deepening Depth-First Search
-def dls(problem, limit):
-    return 0
-
-def rdls(node, problem, limit):
-    if problem == goal:
-        return solution(node)
-    elif limit == 0:
-        return cutoff()
+def recursive_dls(cur_node, goal_state, max_depth, num_expanded):
+    if cur_node.state.chicken_left == goal_state.chicken_left and cur_node.state.wolf_left == goal_state.wolf_left and cur_node.state.boat_location == False:
+        return cur_node, num_expanded
+    elif max_depth == 0:
+        return "cutoff", num_expanded
     else:
-        is_cutoff = False
-    #    for i in range(0, limit):
-            #do recursive dls
-            # in this for or while 
-    return 0
+        cutoff_occurred = False
+        succs = successor(cur_node)
+        for succ_node in succs:
+            num_expanded += 1
+            result, num_expanded = recursive_dls(succ_node, goal_state, max_depth - 1, num_expanded)
+            if result == "cutoff":
+                cutoff_occurred = True
+            elif result:
+                # Done!
+                print("second: %d" % num_expanded)
+                return result, num_expanded
+        if cutoff_occurred == True:
+            return "cutoff", num_expanded
+        else:
+            return False, num_expanded
 
-def iddfs(problem):
-    depth = 0
-    infi = math.inf
-    for i in range(0, infi):
-        if(dls(problem, depth)):
-            return True
-    return False
+def dls(init_state, goal_state, max_depth, num_expanded):
+    init_node = Node(None, init_state, None)
+    return recursive_dls(init_node, goal_state, max_depth, num_expanded)
 
+def iddfs(init_state, goal_state):
+    num_expanded = 0
+    max_depth = 0
+    limit_depth = 15
+    while True:
+        result, num_expanded = dls(init_state, goal_state, max_depth, num_expanded)
+        print("first: %d" %  num_expanded)
+        if result != "cutoff":
+            print("Success!")
+            return result, num_expanded
+        else:
+            print("Goal condition cannot be satisfied with %d maximum depth" % max_depth)
+        max_depth += 1
+        num_expanded = 0
+
+        if max_depth == limit_depth:
+            return False, num_expanded
+
+import queue as qu
 # Page 99 - A* Search (Recursive Best-First Search)
-def astar():
-    return 0
+def astar(init_state, goal_state):
+    if(init_state == goal_state):
+        return Node(None, init_state, None), 0
 
-def action_sequence(node):
-    actions = []
-    while node != None:
-        actions.append(node.successor_statement)
-        node = node.parent_node
-    return list(reversed(actions))
+    frontier = qu.PriorityQueue()
+    frontier.put((0, Node(None, init_state, None)))
+
+
+    explored = set()
+    num_expanded = 0
+
+    while frontier:
+        print("whileback")
+        cur_node = frontier.get()
+        print("\n\n\cur_node: ", cur_node, "\n\n")
+        explored.add(cur_node[1])
+        succs = successor(cur_node[1])
+        print("\n\n\succs_node: ", succs, "\n\n")
+
+        print("test end")
+
+        for succ_node in succs:
+            if succ_node in explored:
+                print("test end1")
+                num_expanded += 1
+            if succ_node not in explored:
+                print("test end2")
+                num_expanded += 1
+                if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left:
+                    print("test result")
+                    return succ_node, num_expanded
+                print("\n\tsucc: ", succ_node, succ_node.state.chicken_right + succ_node.state.wolf_right, "\n")
+                frontier.put(((succ_node.state.chicken_right + succ_node.state.wolf_right), succ_node))
+                print("\nput success\n")
+
 
 def print_path(path):
+    if path == False:
+        print("The %s algorithm can't find solution path" % args.mode)
+        return 0
     path_statements = []
     solution_path = ""
 
@@ -243,7 +326,6 @@ def print_path(path):
     for statement in path_statements:
         if statement != None:
             solution_path += statement + "\n"
-            print(statement)
     
     print("total steps: %d" % (len(path_statements) - 1))
     return solution_path
@@ -286,19 +368,25 @@ if __name__ == "__main__":
     if args.mode == "bfs":
         path, num_expanded = bfs(init_state, goal_state)
     elif args.mode == "dfs":
-        path, num_expanded = dfs()
+        path, num_expanded = dfs(init_state, goal_state)
     elif args.mode == "iddfs":
-        result = iddfs()
+        path, num_expanded = iddfs(init_state, goal_state)
     elif args.mode == "astar":
-        result = astar()
+        path, num_expanded = astar(init_state, goal_state)
 
     print("\n-- your mode is %s --" % args.mode)
-    print("the %s algorithm expeneds %d nodes" % (args.mode, num_expanded))
-    print("-- solution path --")
-    print_path(path)
+    
+    # if the algorithm can find solution path, then print out and write result.txt
+    if path != False:
+        print("the %s algorithm expended %d nodes" % (args.mode, num_expanded))
+        print("-- solution path --")
+        print(print_path(path))
 
-    with open("result.txt", "w") as f_3:
-        f_3.write("-- your mode is %s --\n" % args.mode)
-        f_3.write("the %s algorithm expeneds %d nodes\n" % (args.mode, num_expanded))
-        f_3.write("-- solution path --\n")
-        f_3.write(print_path(path))
+        with open(args.output_file, "w") as f_3:
+            f_3.write("-- your mode is %s --\n" % args.mode)
+            f_3.write("the %s algorithm expended %d nodes\n" % (args.mode, num_expanded))
+            f_3.write("-- solution path --\n")
+            f_3.write(print_path(path))
+    
+    else:
+        print("The %s algorithm can't find solution path" % args.mode)
