@@ -245,7 +245,6 @@ def recursive_dls(cur_node, goal_state, max_depth, num_expanded):
                 cutoff_occurred = True
             elif result:
                 # Done!
-                print("second: %d" % num_expanded)
                 return result, num_expanded
         if cutoff_occurred == True:
             return "cutoff", num_expanded
@@ -262,12 +261,10 @@ def iddfs(init_state, goal_state):
     limit_depth = 15
     while True:
         result, num_expanded = dls(init_state, goal_state, max_depth, num_expanded)
-        print("first: %d" %  num_expanded)
         if result != "cutoff":
-            print("Success!")
             return result, num_expanded
         else:
-            print("Goal condition cannot be satisfied with %d maximum depth" % max_depth)
+            print("Unreached goal state with %d maximum depth" % max_depth)
         max_depth += 1
         num_expanded = 0
 
@@ -288,28 +285,18 @@ def astar(init_state, goal_state):
     num_expanded = 0
 
     while frontier:
-        print("whileback")
         cur_node = frontier.get()
-        print("\n\n\cur_node: ", cur_node, "\n\n")
         explored.add(cur_node[1])
         succs = successor(cur_node[1])
-        print("\n\n\succs_node: ", succs, "\n\n")
-
-        print("test end")
 
         for succ_node in succs:
             if succ_node in explored:
-                print("test end1")
                 num_expanded += 1
             if succ_node not in explored:
-                print("test end2")
                 num_expanded += 1
                 if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left:
-                    print("test result")
                     return succ_node, num_expanded
-                print("\n\tsucc: ", succ_node, succ_node.state.chicken_right + succ_node.state.wolf_right, "\n")
                 frontier.put(((succ_node.state.chicken_right + succ_node.state.wolf_right), succ_node))
-                print("\nput success\n")
 
 
 def print_path(path):
