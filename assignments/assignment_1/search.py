@@ -231,26 +231,29 @@ def dfs(init_state, goal_state):
 
 # Page 88~89 - Iterative Deepening Depth-First Search
 def recursive_dls(cur_node, goal_state, max_depth, num_expanded):
+    # if currnet state condition has the same with goal state then done !
     if cur_node.state.chicken_left == goal_state.chicken_left and cur_node.state.wolf_left == goal_state.wolf_left and cur_node.state.boat_location == False:
         return cur_node, num_expanded
+    # other wise, it max_depth is 0, then retrun cutoff
     elif max_depth == 0:
         return "cutoff", num_expanded
+    #otherwise, keep doing recursive_dls
     else:
         cutoff_occurred = False
-        succs = successor(cur_node)
+        succs = successor(cur_node) #succ_node is all possible next nodes from current except impossible nodes(false state)
         for succ_node in succs:
             num_expanded += 1
-            result, num_expanded = recursive_dls(succ_node, goal_state, max_depth - 1, num_expanded)
+            result, num_expanded = recursive_dls(succ_node, goal_state, max_depth - 1, num_expanded) #Recursive
             if result == "cutoff":
                 cutoff_occurred = True
             elif result:
-                # Done!
+                # Done! Success to get goal state.
                 return result, num_expanded
-        if cutoff_occurred == True:
+        if cutoff_occurred == True: #if it's cutoff, then return cutoff
             return "cutoff", num_expanded
         else:
             return False, num_expanded
-
+# it sets initial state and run recursive_dls (depth limited DFS) for recursive.
 def dls(init_state, goal_state, max_depth, num_expanded):
     init_node = Node(None, init_state, None)
     return recursive_dls(init_node, goal_state, max_depth, num_expanded)
@@ -259,12 +262,16 @@ def iddfs(init_state, goal_state):
     num_expanded = 0
     max_depth = 0
     limit_depth = 12
+    #keep running loop until it reaches goal state or visit all nodes.
     while True:
+        #call dls
         result, num_expanded = dls(init_state, goal_state, max_depth, num_expanded)
         if result != "cutoff":
             return result, num_expanded
+        #if it doesn't get goal state, then it print the current state with maximum depth
         else:
             print("Unreached goal state with %d maximum depth" % max_depth)
+        # set limited depth for test case 2 and 3
         if max_depth == limit_depth:
             print("Num_expnaded: ", num_expanded)
             return False, num_expanded
@@ -276,28 +283,35 @@ def iddfs(init_state, goal_state):
 import queue as qu
 # Page 99 - A* Search (Recursive Best-First Search)
 def astar(init_state, goal_state):
+    #if init_state is goal, then it return just initial state with 0 expanded node
     if(init_state == goal_state):
         return Node(None, init_state, None), 0
 
+    #set priority queue from import queue
     frontier = qu.PriorityQueue()
+    # put initial state in the priorirty queue
     frontier.put((0, Node(None, init_state, None)))
 
-
+    #initialize the explored set to be empty
     explored = set()
     num_expanded = 0
 
     while frontier:
+        #Priority queue for a-star
         cur_node = frontier.get()
         explored.add(cur_node[1])
         succs = successor(cur_node[1])
-
+        #succ_node is all possible next nodes from current except impossible nodes(false state)
         for succ_node in succs:
             if succ_node in explored:
                 num_expanded += 1
+            # if the element node of the set of successor is not included in explored list, then compare the node with goal state
             if succ_node not in explored:
                 num_expanded += 1
+                # if succ_node state condition has the same with goal state then done !
                 if succ_node.state.chicken_left == goal_state.chicken_left and succ_node.state.wolf_left == goal_state.wolf_left:
                     return succ_node, num_expanded
+                # add new succesor node on frontier
                 frontier.put(((succ_node.state.chicken_right + succ_node.state.wolf_right), succ_node))
 
 
