@@ -258,18 +258,20 @@ def dls(init_state, goal_state, max_depth, num_expanded):
 def iddfs(init_state, goal_state):
     num_expanded = 0
     max_depth = 0
-    limit_depth = 15
+    limit_depth = 12
     while True:
         result, num_expanded = dls(init_state, goal_state, max_depth, num_expanded)
         if result != "cutoff":
             return result, num_expanded
         else:
             print("Unreached goal state with %d maximum depth" % max_depth)
+        if max_depth == limit_depth:
+            print("Num_expnaded: ", num_expanded)
+            return False, num_expanded
         max_depth += 1
         num_expanded = 0
 
-        if max_depth == limit_depth:
-            return False, num_expanded
+        
 
 import queue as qu
 # Page 99 - A* Search (Recursive Best-First Search)
