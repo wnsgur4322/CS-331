@@ -116,7 +116,7 @@ class MinimaxPlayer(Player):
                 max_val = utility
         else:
             for i in range(len(succ_move)):
-                # set up virtual board before calculate utility
+                # set up virtual board before calculate utility for recording
                 virtual_board = board.cloneOBoard()
                 virtual_board.play_move(succ_move[i][0], succ_move[i][1], self.symbol)
                 # get utility value for each virtual move
@@ -142,7 +142,7 @@ class MinimaxPlayer(Player):
                 min_val = utility
         else:
             for i in range(len(succ_move)):
-                # set up virtual board before calculate utility
+                # set up virtual board before calculate utility for recording
                 virtual_board = board.cloneOBoard()
                 virtual_board.play_move(succ_move[i][0], succ_move[i][1], self.oppSym)
                 # get utility value for each virtual move

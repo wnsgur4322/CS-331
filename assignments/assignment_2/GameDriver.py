@@ -58,6 +58,12 @@ class GameDriver:
             if self.board.count_score(self.p2.symbol) < self.board.count_score(self.p1.symbol):
                 print("\nAI: HOW DARE!, HUMAN\n")
 
+    # to record player's input path
+    def record_path(self, user_input, record):
+        record.append(user_input)
+
+        return record
+
     def process_move(self, curr_player, opponent):
         invalid_move = True
         while(invalid_move):
@@ -67,7 +73,7 @@ class GameDriver:
             else:
                 print("Move:", [col,row], "\n")
                 self.board.play_move(col,row,curr_player.symbol)
-                return
+                return (col, row)
 
 
     def run(self, game):
@@ -79,11 +85,19 @@ class GameDriver:
 
         #main execution of game
         print("Player 1(", self.p1.symbol, ") move:")
+
+        p1_path = []
+        p2_path = []
         while True:
             
             if self.board.has_legal_moves_remaining(current.symbol):
                 cant_move_counter = 0
-                self.process_move(current, opponent)
+                user_input = self.process_move(current, opponent)
+                if current.symbol == 'X':
+                    self.record_path(user_input, p1_path)
+                else:
+                    self.record_path(user_input, p2_path)    
+
                 self.board.display()
                 game.display()
             else:
@@ -104,17 +118,26 @@ class GameDriver:
         #decide win/lose/tie state
         state = self.board.count_score(self.p1.symbol) - self.board.count_score(self.p2.symbol)
         if( state == 0):
+            print("---------------")
             print("Tie game!!")
+            print("\nplayer 1's inputs: {0}".format(p1_path))
+            print("player 2's inputs: {0}".format(p2_path))
             # fun stuff
             if ((sys.argv[1] == "ai" or "minimax") and sys.argv[2] == "human") or ((sys.argv[2] == "ai" or "minimax") and sys.argv[1] == "human"):
                 print("\nAI: I WAS CAUGHT OFF GUARD, HUMAN")
         elif state >0:
+            print("---------------")
             print("Player 1 Wins!")
+            print("\nplayer 1's inputs: {0}".format(p1_path))
+            print("player 2's inputs: {0}".format(p2_path))
             #fun stuff
             if (sys.argv[1] == "ai" or "minimax") and sys.argv[2] == "human":
                 print("\nAI: PATHETIC, HUMAN")
         else:
+            print("---------------")
             print("Player 2 Wins!")
+            print("\nplayer 1's inputs: {0}".format(p1_path))
+            print("player 2's inputs: {0}".format(p2_path))
             #fun stuff
             if (sys.argv[2] == "ai" or "minimax") and sys.argv[1] == "human":
                 print("\nAI: PATHETIC, HUMAN")
