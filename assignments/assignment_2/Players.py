@@ -34,9 +34,24 @@ class HumanPlayer(Player):
         
 #PYTHON: return tuple instead of change reference as in C++
     def get_move(self, board):
+        succ_move = self.successor(board, self.symbol)
+        print("available moves: {0}".format(succ_move))
         col = int(input("Enter col:"))
         row = int(input("Enter row:"))
         return  (col, row)
+
+    # I added successor function for human player too because of convenience
+    def successor(self, board, symbol):
+        # list of successors
+        succ = []
+        
+        # check all spots are available to put on the board
+        for c in range(4):
+            for r in range(4):
+                if board.is_legal_move(c, r, symbol) == True:
+                    succ.append((c, r))
+        
+        return succ
 
 
 class MinimaxPlayer(Player):
@@ -59,13 +74,13 @@ class MinimaxPlayer(Player):
         utility = 0         # value for choosing best successor
 
         succ_move = self.successor(board, self.symbol)
-        print(succ_move)
+        print("available moves: {0}".format(succ_move))
 
         for i in range(len(succ_move)):
             # set up virtual board before calculate utility
             virtual_board = board.cloneOBoard()
             virtual_board.play_move(succ_move[i][0], succ_move[i][1], self.symbol)
-            
+    
             # if AI is first player, get max of min value
             if self.symbol == board.p1_symbol:
                 utility = self.min_value(virtual_board)
@@ -76,20 +91,21 @@ class MinimaxPlayer(Player):
             
             # if AI is the seconnd player, get min of max value
             else:
-                utility = self.max_value(virtual_board)
-                if utility < min_val:
-                    min_val = utility
+                utility = self.min_value(virtual_board)
+                if utility >= max_val:
+                    max_val = utility
                     col = succ_move[i][0]
                     row = succ_move[i][1]
 
         return (col, row)
+
     
     def max_value(self, board):
         # v <= negative infinity
         max_val = -(math.inf)
         utility = 0
         # if there is no more reamining spot on the board, then return utility directly
-        if board.has_legal_moves_remaining(self.symbol) == False and board.has_legal_moves_remaining(self.symbol) == False:
+        if board.has_legal_moves_remaining(self.symbol) == False and board.has_legal_moves_remaining(self.oppSym) == False:
             return self.get_utility(board)
         
         # get available successors
@@ -107,14 +123,15 @@ class MinimaxPlayer(Player):
                 utility = self.min_value(virtual_board)
                 if utility >= max_val:
                     max_val = utility
-        return utility
+        
+        return max_val
 
     def min_value(self, board):
         # v <= infinity
         min_val = math.inf
         utility = 0
         # if there is no more reamining spot on the board, then return utility directly
-        if board.has_legal_moves_remaining(self.symbol) == False and board.has_legal_moves_remaining(self.symbol) == False:
+        if board.has_legal_moves_remaining(self.symbol) == False and board.has_legal_moves_remaining(self.oppSym) == False:
             return self.get_utility(board)
         
         #get available successors
@@ -132,7 +149,7 @@ class MinimaxPlayer(Player):
                 utility = self.max_value(virtual_board)
                 if utility < min_val:
                     min_val = utility
-        return utility
+        return min_val
 
     def successor(self, board, symbol):
         # list of successors
