@@ -46,8 +46,7 @@ def create_bow(input, vocabulary):
     return bag_of_words, name
 
 
-######### fix this to Bernoulli version ##############
-# To calculate the total number of words in reviews (positive or negative)
+# To calculate the total number of sentences in the set (1 or 0)
 def total_num(reviews, pos_neg):
     res = 0
     for i in range(len(reviews)):
@@ -58,12 +57,12 @@ def total_num(reviews, pos_neg):
     print("The total number of words in all %s reviews: %d" % (pos_neg,res))
     return res
 
-# apply the multi-nomial Naive Bayes classifier with Laplace smooth (Bernoulli version)
+# apply the Naive Bayes classifier with Laplace smooth (Bernoulli version)
 def conditional_probability(model_type, total_num, index, pos_neg, alpha):
-    # formula: (the number of words in class(pos or neg) + Laplace smooth (1)) / (&total number of words in class + &bag of words size (2000))
+    # formula: (the number of sentences with word i in class(1 or 0) + Laplace smooth (1)) / (&total number of sentences in class + 2*Laplace smooth)
     res = float((model_type['Count'][index] + alpha) / (total_num + (2 * alpha)))
     return res
-    #CP fomular: ((# of words appearances in pos or neg) + 1) / (total # of words in pos (duplication is counted)) + 2000)
+
 
 from functools import reduce
 def prediction(sentence, pos_CP, neg_CP, train_pos_prob, train_neg_prob):
@@ -79,21 +78,19 @@ def prediction(sentence, pos_CP, neg_CP, train_pos_prob, train_neg_prob):
         neg_pow_list = [math.log(wi) * n for wi, n in zip(neg_CP, word_count)]
         neg_pow_list = list(filter((0.0).__ne__, neg_pow_list))
         
-        # P(Positive | Validation reviews) = train_pos_prob * pos_CP[word_1]^n * pos_CP[word_2] ....
+        # P(1 | sets) = train_pos_prob * pos_CP[word_1]^n * pos_CP[word_2] ....
         pos_res = math.log(train_pos_prob) + reduce(lambda x, y: x + y, pos_pow_list)
         
-        # P(Negative | Validation reviews) = train_neg_prob * neg_CP[word_1]^n * neg_CP[word_2] ....
+        # P(0 | sets) = train_neg_prob * neg_CP[word_1]^n * neg_CP[word_2] ....
         neg_res = math.log(train_neg_prob) + reduce(lambda x, y: x + y, neg_pow_list)
 
         if pos_res > neg_res:
-            # positive
+            # 1
             return("1")
         else:
-            # negative
+            # 0
             return("0") 
 
-
-##############################
 
 if __name__ == "__main__":
     # training set pre-processing
@@ -113,7 +110,6 @@ if __name__ == "__main__":
     analyzer = "word"
     )
     X = vectorizer.fit_transform(train_sentences)
-    #print(len(vectorizer.get_feature_names()), vectorizer.get_feature_names())
     # fit the vectorizer on the text
     vectorizer.fit(train_sentences)
     # get the vocabulary
@@ -158,7 +154,6 @@ if __name__ == "__main__":
 
     # generate BOW for all restaurant reviews
     print("\ngenerating train BOW of restaurant reviews ...")
-    # test_bow, name = create_bow(test_sentences, test_vocabulary)
     test_bow, test_name = create_bow(test_sentences, train_vocabulary)
 
     np_test_labels = np.array(test_labels)[np.newaxis].T
@@ -178,7 +173,6 @@ if __name__ == "__main__":
     with open('preprocessed_test.txt', 'r+') as t_res:
         content = t_res.read()
         t_res.seek(0, 0)
-        # t_res.write(','.join(test_vocabulary) + ",class_label\n" + content)
         t_res.write(','.join(train_vocabulary) + ",class_label\n" + content)
     
     print("done ... !")
@@ -231,7 +225,6 @@ if __name__ == "__main__":
     total_pos = total_num(train_pos, 1)
     for i in range(len(postrain_model)):
         pos_CP.append(conditional_probability(postrain_model, total_pos, i, 1, 1))
-        #print(i, len(train_vocabulary))
 
     #P(Wi...len(train_vocabulary)|0) Part
     neg_CP = []
@@ -247,7 +240,6 @@ if __name__ == "__main__":
 
     for i in range(len(train_sentences)):
         train_predictions.append(prediction(train_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
-        #print("training looping ... %d" % i)
 
     train_accuracy = 0
     for i in range(len(train_predictions)):
