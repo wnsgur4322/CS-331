@@ -35,7 +35,8 @@ def clean_text(text):
 
 def create_bow(input, vocabulary):
     vectorizer = CountVectorizer(
-        analyzer = 'word'
+        analyzer = 'word',
+        vocabulary=vocabulary
     )
     bag_of_words = vectorizer.fit_transform(input)
     bag_of_words = bag_of_words.toarray()
@@ -106,9 +107,6 @@ if __name__ == "__main__":
             splitting = line.strip().split('\t')
             train_sentences.append(clean_text(splitting[0]))
             train_labels.append(int(splitting[1]))
-
-    print(train_sentences[41])
-    #print(train_labels)
     
     # Pre-processing step
     vectorizer = CountVectorizer(
@@ -121,10 +119,9 @@ if __name__ == "__main__":
     # get the vocabulary
     inv_vocab = {v: k for k, v in vectorizer.vocabulary_.items()}
     train_vocabulary = [inv_vocab[i] for i in range(len(inv_vocab))]
-    print(len(train_vocabulary))
 
     # generate BOW for all restaurant reviews
-    print("generating train BOW of restaurant reviews ...")
+    print("\ngenerating train BOW of restaurant reviews ...")
     bow, name = create_bow(train_sentences, train_vocabulary)
 
     np_train_labels = np.array(train_labels)[np.newaxis].T
@@ -135,16 +132,6 @@ if __name__ == "__main__":
             if bow[i][j] > 0:
                 bow[i][j] = 1
 
-    # delete later
-    print(bow[120])
-    print(len(bow[120]))
-    print(len(bow))
-    counter = 0
-    for i in range(len(bow[120]) - 1):
-        if bow[120][i] == 1:
-            counter += 1
-    #
-
     # write pre-processed files
     np.savetxt('preprocessed_train.txt', bow, fmt="%d", delimiter=',')
 
@@ -153,8 +140,6 @@ if __name__ == "__main__":
         res.seek(0, 0)
         res.write(','.join(train_vocabulary) + ",class_label\n" + content)
 
-    print(len(train_labels))
-    print(counter)
     print("done ... !")
 
     # test set pre-processing
@@ -169,25 +154,10 @@ if __name__ == "__main__":
             test_sentences.append(clean_text(splitting[0]))
             test_labels.append(int(splitting[1]))
 
-    print(test_sentences[41])
-    #print(train_labels)
     
-    # Pre-processing step
-    '''
-    vectorizer = CountVectorizer(
-    analyzer = "word"
-    )
-    X = vectorizer.fit_transform(test_sentences)
-    #print(len(vectorizer.get_feature_names()), vectorizer.get_feature_names())
-    # fit the vectorizer on the text
-    vectorizer.fit(test_sentences)
-    # get the vocabulary - Do we need? only needs Train_voca
-    inv_vocab = {v: k for k, v in vectorizer.vocabulary_.items()}
-    test_vocabulary = [inv_vocab[i] for i in range(len(inv_vocab))]
-    print(len(test_vocabulary))
-    '''
+
     # generate BOW for all restaurant reviews
-    print("generating train BOW of restaurant reviews ...")
+    print("\ngenerating train BOW of restaurant reviews ...")
     # test_bow, name = create_bow(test_sentences, test_vocabulary)
     test_bow, test_name = create_bow(test_sentences, train_vocabulary)
 
@@ -198,18 +168,11 @@ if __name__ == "__main__":
         for j in range(len(test_bow[i]) - 1):
             if test_bow[i][j] > 0:
                 test_bow[i][j] = 1
-
-    # delete later
-    print(test_bow[120])
-    print(len(test_bow[120]))
-    print(len(test_bow))
-    counter = 0
-    for i in range(len(test_bow[120]) - 1):
-        if test_bow[120][i] == 1:
-            counter += 1
-    #
-
+    print("done ... !")
+    
+    
     # write pre-processed files
+    print("\nWriting pre-processed files...")
     np.savetxt('preprocessed_test.txt', test_bow, fmt="%d", delimiter=',')
 
     with open('preprocessed_test.txt', 'r+') as t_res:
@@ -217,9 +180,7 @@ if __name__ == "__main__":
         t_res.seek(0, 0)
         # t_res.write(','.join(test_vocabulary) + ",class_label\n" + content)
         t_res.write(','.join(train_vocabulary) + ",class_label\n" + content)
-
-    print(len(test_labels))
-    print(counter)
+    
     print("done ... !")
 
     # Classification step
@@ -227,40 +188,27 @@ if __name__ == "__main__":
     # separate training reviews based on label data
     train_pos = [train_sentences[i] for i in range(len(train_labels)) if train_labels[i] == 1 ]
     train_neg = [train_sentences[i] for i in range(len(train_labels)) if train_labels[i] == 0 ]
-    print(len(train_pos), len(train_neg))
-    print(train_pos[0])
 
-    #----------Working---------------#
     # Make train models
-    '''
-    train_model = pd.DataFrame( 
-    (count, word) for word, count in
-    zip(bow, name))
-    train_model.columns = ['Word', 'Count']
-    print(train_model)
-    print(len(train_model))
-    print("done ... !")
-    '''
-
-    bow_train, name_train = create_bow(train_sentences, train_vocabulary)
-    bow_train = np.sum(bow_train, axis=0)
+    print("\nMaking training models...")
+    bows = np.sum(bow, axis=0)
 
     train_model = pd.DataFrame( 
     (count, word) for word, count in
-    zip(bow_train, name_train))
+    zip(bows, name))
     train_model.columns = ['Word', 'Count']
-    print(train_model)
-    print(len(train_model))
     print("done ... !")
-    
 
-
-    # Priors: training set's positive and negative probabilities
+    # Priors: training set's (1) and (0) probabilities
+    print("\nCaculating positive(1) and negative(0) prbabilities...")
     train_pos_prob = len(train_pos) / len(train_sentences)
     train_neg_prob = len(train_neg) / len(train_sentences)
-    print("probabilities of training set\npositive: %f\nnegative: %f" % (train_pos_prob, train_neg_prob))
+    print("probabilities of training set\npositive(1): %f\nnegative(0): %f" % (train_pos_prob, train_neg_prob))
+    print("done ... !")
+
 
     # Learns the parameters used by the classifier
+    print("\nLearning the parameters used by the classifier...")
     posbow_train, posname_train = create_bow(train_pos, train_vocabulary)
     posbow_train = np.sum(posbow_train, axis=0)
 
@@ -269,8 +217,6 @@ if __name__ == "__main__":
     (count, word) for word, count in
     zip(posbow_train, posname_train))
     postrain_model.columns = ['Word', 'Count']
-    print(postrain_model)
-    print(len(postrain_model), len(posname_train))
     
     negbow_train, negname_train = create_bow(train_neg, train_vocabulary)
     negbow_train = np.sum(negbow_train, axis=0)
@@ -279,8 +225,6 @@ if __name__ == "__main__":
     (count, word) for word, count in
     zip(negbow_train, negname_train))
     negtrain_model.columns = ['Word', 'Count']
-    print(negtrain_model)
-    print(len(negtrain_model))
 
     #P(Wi...len(train_vocabulary)|1) Part
     pos_CP = []
@@ -294,40 +238,35 @@ if __name__ == "__main__":
     total_neg = total_num(train_neg, 0)
     for i in range(len(negtrain_model)):
         neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0, 1))
+    print("done ... !")
 
 
     # Calculate training accuracy of the Naive Bayes classifier (training)
+    print("\n-----Calculating training accuracy of the Naive Bayes Classifier-----")
     train_predictions = []
 
     for i in range(len(train_sentences)):
         train_predictions.append(prediction(train_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
-        print("training looping ... %d" % i)
-
-    print("Prediction result for training")
-    print(train_predictions)
-    print("done ... !")
+        #print("training looping ... %d" % i)
 
     train_accuracy = 0
     for i in range(len(train_predictions)):
-        if train_predictions[i] == train_labels[i]:
+        if int(train_predictions[i]) == train_labels[i]:
             train_accuracy += 1
-    print("The training accuracy of the Naive Bayes classifier: %f" % float(train_accuracy/len(train_predictions)))
+    print("--The training accuracy of the Naive Bayes classifier: %f" % float(train_accuracy/len(train_predictions)))
 
 
     # Calculate test accuracy of the Naive Bayes classifier (test)
+    print("\n-----Calculating test accuracy of the Naive Bayes Classifier-----")
     test_predictions = []
 
     for i in range(len(test_sentences)):
         test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
-        print("test looping ... %d" % i)
-
-    print("Prediction result for test")
-    print(test_predictions)
-    print("done ... !")
 
     test_accuracy = 0
     for i in range(len(test_predictions)):
-        if test_predictions[i] == test_labels[i]:
+        if int(test_predictions[i]) == test_labels[i]:
             test_accuracy += 1
-    print("The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
+
+    print("--The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
 
