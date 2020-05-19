@@ -232,6 +232,7 @@ if __name__ == "__main__":
 
     #----------Working---------------#
     # Make train models
+    '''
     train_model = pd.DataFrame( 
     (count, word) for word, count in
     zip(bow, name))
@@ -239,6 +240,20 @@ if __name__ == "__main__":
     print(train_model)
     print(len(train_model))
     print("done ... !")
+    '''
+
+    bow_train, name_train = create_bow(train_sentences, train_vocabulary)
+    bow_train = np.sum(bow_train, axis=0)
+
+    train_model = pd.DataFrame( 
+    (count, word) for word, count in
+    zip(bow_train, name_train))
+    train_model.columns = ['Word', 'Count']
+    print(train_model)
+    print(len(train_model))
+    print("done ... !")
+    
+
 
     # Priors: training set's positive and negative probabilities
     train_pos_prob = len(train_pos) / len(train_sentences)
@@ -249,12 +264,13 @@ if __name__ == "__main__":
     posbow_train, posname_train = create_bow(train_pos, train_vocabulary)
     posbow_train = np.sum(posbow_train, axis=0)
 
+
     postrain_model = pd.DataFrame( 
     (count, word) for word, count in
     zip(posbow_train, posname_train))
     postrain_model.columns = ['Word', 'Count']
     print(postrain_model)
-    print(len(postrain_model))
+    print(len(postrain_model), len(posname_train))
     
     negbow_train, negname_train = create_bow(train_neg, train_vocabulary)
     negbow_train = np.sum(negbow_train, axis=0)
@@ -269,28 +285,21 @@ if __name__ == "__main__":
     #P(Wi...len(train_vocabulary)|1) Part
     pos_CP = []
     total_pos = total_num(train_pos, 1)
-    for i in range(len(train_vocabulary)):
+    for i in range(len(postrain_model)):
         pos_CP.append(conditional_probability(postrain_model, total_pos, i, 1, 1))
+        #print(i, len(train_vocabulary))
 
     #P(Wi...len(train_vocabulary)|0) Part
     neg_CP = []
     total_neg = total_num(train_neg, 0)
-    for i in range(len(train_vocabulary)):
+    for i in range(len(negtrain_model)):
         neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0, 1))
 
 
     # Calculate training accuracy of the Naive Bayes classifier (training)
     train_predictions = []
-    train_lines = 0
-    myFile = open('trainingSet.txt', 'r')
 
-    while True:
-        if myFile.readline()=='':
-            break
-        train_lines += 1
-    print(train_lines)
-
-    for i in range(train_lines):
+    for i in range(len(train_sentences)):
         train_predictions.append(prediction(train_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
         print("training looping ... %d" % i)
 
@@ -307,16 +316,8 @@ if __name__ == "__main__":
 
     # Calculate test accuracy of the Naive Bayes classifier (test)
     test_predictions = []
-    testset_lines = 0
-    myFile = open('testSet.txt', 'r')
 
-    while True:
-        if myFile.readline()=='':
-            break
-        testset_lines += 1
-    print(testset_lines)
-
-    for i in range(testset_lines):
+    for i in range(len(test_sentences)):
         test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
         print("test looping ... %d" % i)
 
