@@ -279,7 +279,33 @@ if __name__ == "__main__":
         neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0, 1))
 
 
-    # separate test reviews based on label data
+    # Calculate training accuracy of the Naive Bayes classifier (training)
+    train_predictions = []
+    train_lines = 0
+    myFile = open('trainingSet.txt', 'r')
+
+    while True:
+        if myFile.readline()=='':
+            break
+        train_lines += 1
+    print(train_lines)
+
+    for i in range(train_lines):
+        train_predictions.append(prediction(train_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
+        print("training looping ... %d" % i)
+
+    print("Prediction result for training")
+    print(train_predictions)
+    print("done ... !")
+
+    train_accuracy = 0
+    for i in range(len(train_predictions)):
+        if train_predictions[i] == train_labels[i]:
+            train_accuracy += 1
+    print("The training accuracy of the Naive Bayes classifier: %f" % float(train_accuracy/len(train_predictions)))
+
+
+    # Calculate test accuracy of the Naive Bayes classifier (test)
     test_predictions = []
     testset_lines = 0
     myFile = open('testSet.txt', 'r')
@@ -294,7 +320,7 @@ if __name__ == "__main__":
         test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
         print("test looping ... %d" % i)
 
-    print("Prediction result for test(10k)")
+    print("Prediction result for test")
     print(test_predictions)
     print("done ... !")
 
@@ -302,6 +328,5 @@ if __name__ == "__main__":
     for i in range(len(test_predictions)):
         if test_predictions[i] == test_labels[i]:
             test_accuracy += 1
-    print("The accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
+    print("The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
 
-    # Calculate accuracy of the Naive Bayes classifier    
