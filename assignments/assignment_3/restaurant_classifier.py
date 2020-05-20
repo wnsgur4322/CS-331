@@ -345,7 +345,7 @@ if __name__ == "__main__":
     test_predictions = []
 
     for i in range(len(test_sentences)):
-        test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
+        test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))   
 
     test_accuracy = 0
     for i in range(len(test_predictions)):
@@ -355,3 +355,12 @@ if __name__ == "__main__":
     print("--The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
 
 
+    # record results of both train and test accuracies
+    with open('results.txt', 'w') as res:
+        res.write("In pre-processing step, we extrated two bag of words files (preprocessed_train.txt & preprocessed_test.txt) from trainingSet.txt and testSet.txt\n")
+        res.write("For classification step, we trained our model with the preprocessed data\n")
+        res.write("With the trained model, we tested with trainingSet.txt to get training accuracy\n")
+        res.write("The training accuracy of the Naive Bayes classifier: %f\n" % float(train_accuracy/len(train_predictions)))
+        res.write("After training and testing with training set, we trained our model with the preprocessed data of training\n")
+        res.write("With the trained model, we tested with testSet.txt to get test accuracy\n")
+        res.write("The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
