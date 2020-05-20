@@ -2,6 +2,5 @@ In pre-processing step, we extrated two bag of words files (preprocessed_train.t
 For classification step, we trained our model with the preprocessed data
 With the trained model, we tested with trainingSet.txt to get training accuracy
 The training accuracy of the Naive Bayes classifier: 0.915832
-After training and testing with training set, we trained our model with the preprocessed data of training
 With the trained model, we tested with testSet.txt to get test accuracy
 The test accuracy of the Naive Bayes classifier: 0.756539

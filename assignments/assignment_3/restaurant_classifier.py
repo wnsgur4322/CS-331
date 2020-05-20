@@ -58,9 +58,9 @@ def total_num(reviews, pos_neg):
     return res
 
 # apply the Naive Bayes classifier with Uniform Dirichlet Priors (Bernoulli version)
-def conditional_probability(model_type, total_num, index, pos_neg, alpha):
-    # formula: (the number of sentences with word i in class(1 or 0) + 1) / (&total number of sentences in class + 2*Laplace smooth)
-    res = float((model_type['Count'][index] + alpha) / (total_num + (2 * alpha)))
+def conditional_probability(model_type, total_num, index, pos_neg):
+    # formula: (the number of sentences with word i in class(1 or 0) + 1) / (&total number of sentences in class + the number of values that X can take on)
+    res = float((model_type['Count'][index] + 1) / (total_num + 2))
     return res
 
 
@@ -177,93 +177,6 @@ if __name__ == "__main__":
     
     print("done ... !")
 
-    '''
-    # Classification step
-
-    # separate training reviews based on label data
-    train_pos = [train_sentences[i] for i in range(len(train_labels)) if train_labels[i] == 1 ]
-    train_neg = [train_sentences[i] for i in range(len(train_labels)) if train_labels[i] == 0 ]
-
-    # Make train models
-    print("\nMaking training models...")
-    bows = np.sum(train_sentences, axis=0)
-
-    train_model = pd.DataFrame( 
-    (count, word) for word, count in
-    zip(bows, name))
-    train_model.columns = ['Word', 'Count']
-    print("done ... !")
-
-    # Priors: training set's (1) and (0) probabilities
-    print("\nCaculating positive(1) and negative(0) prbabilities...")
-    train_pos_prob = len(train_pos) / len(train_sentences)
-    train_neg_prob = len(train_neg) / len(train_sentences)
-    print("probabilities of training set\npositive(1): %f\nnegative(0): %f" % (train_pos_prob, train_neg_prob))
-    print("done ... !")
-
-
-    # Learns the parameters used by the classifier
-    print("\nLearning the parameters used by the classifier...")
-    posbow_train, posname_train = create_bow(train_pos, train_vocabulary)
-    posbow_train = np.sum(posbow_train, axis=0)
-
-
-    postrain_model = pd.DataFrame( 
-    (count, word) for word, count in
-    zip(posbow_train, posname_train))
-    postrain_model.columns = ['Word', 'Count']
-    
-    negbow_train, negname_train = create_bow(train_neg, train_vocabulary)
-    negbow_train = np.sum(negbow_train, axis=0)
-
-    negtrain_model = pd.DataFrame( 
-    (count, word) for word, count in
-    zip(negbow_train, negname_train))
-    negtrain_model.columns = ['Word', 'Count']
-
-    #P(Wi...len(train_vocabulary)|1) Part
-    pos_CP = []
-    total_pos = total_num(train_pos, 1)
-    for i in range(len(postrain_model)):
-        pos_CP.append(conditional_probability(postrain_model, total_pos, i, 1, 1))
-
-    #P(Wi...len(train_vocabulary)|0) Part
-    neg_CP = []
-    total_neg = total_num(train_neg, 0)
-    for i in range(len(negtrain_model)):
-        neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0, 1))
-    print("done ... !")
-
-
-    # Calculate training accuracy of the Naive Bayes classifier (training)
-    print("\n-----Calculating training accuracy of the Naive Bayes Classifier-----")
-    train_predictions = []
-
-    for i in range(len(train_sentences)):
-        train_predictions.append(prediction(train_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
-
-    train_accuracy = 0
-    for i in range(len(train_predictions)):
-        if int(train_predictions[i]) == train_labels[i]:
-            train_accuracy += 1
-    print("--The training accuracy of the Naive Bayes classifier: %f" % float(train_accuracy/len(train_predictions)))
-
-
-    # Calculate test accuracy of the Naive Bayes classifier (test)
-    print("\n-----Calculating test accuracy of the Naive Bayes Classifier-----")
-    test_predictions = []
-
-    for i in range(len(test_sentences)):
-        test_predictions.append(prediction(test_sentences[i], pos_CP, neg_CP, train_pos_prob, train_neg_prob))
-
-    test_accuracy = 0
-    for i in range(len(test_predictions)):
-        if int(test_predictions[i]) == test_labels[i]:
-            test_accuracy += 1
-
-    print("--The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
-    '''
-
     # Classification step
     bows = []
     for i in range(len(train_vocabulary)):
@@ -316,13 +229,13 @@ if __name__ == "__main__":
     pos_CP = []
     total_pos = sum(train_pos)
     for i in range(len(postrain_model)):
-        pos_CP.append(conditional_probability(postrain_model, total_pos, i, 1, 1))
+        pos_CP.append(conditional_probability(postrain_model, total_pos, i, 1))
 
     #P(Wi...len(train_vocabulary)|0) Part
     neg_CP = []
     total_neg = sum(train_neg)
     for i in range(len(negtrain_model)):
-        neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0, 1))
+        neg_CP.append(conditional_probability(negtrain_model, total_neg, i, 0))
     print("done ... !")
 
 
@@ -361,6 +274,5 @@ if __name__ == "__main__":
         res.write("For classification step, we trained our model with the preprocessed data\n")
         res.write("With the trained model, we tested with trainingSet.txt to get training accuracy\n")
         res.write("The training accuracy of the Naive Bayes classifier: %f\n" % float(train_accuracy/len(train_predictions)))
-        res.write("After training and testing with training set, we trained our model with the preprocessed data of training\n")
         res.write("With the trained model, we tested with testSet.txt to get test accuracy\n")
         res.write("The test accuracy of the Naive Bayes classifier: %f" % float(test_accuracy/len(test_predictions)))
