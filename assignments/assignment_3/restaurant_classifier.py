@@ -57,9 +57,9 @@ def total_num(reviews, pos_neg):
     print("The total number of words in all %s reviews: %d" % (pos_neg,res))
     return res
 
-# apply the Naive Bayes classifier with Laplace smooth (Bernoulli version)
+# apply the Naive Bayes classifier with Uniform Dirichlet Priors (Bernoulli version)
 def conditional_probability(model_type, total_num, index, pos_neg, alpha):
-    # formula: (the number of sentences with word i in class(1 or 0) + Laplace smooth (1)) / (&total number of sentences in class + 2*Laplace smooth)
+    # formula: (the number of sentences with word i in class(1 or 0) + 1) / (&total number of sentences in class + 2*Laplace smooth)
     res = float((model_type['Count'][index] + alpha) / (total_num + (2 * alpha)))
     return res
 
