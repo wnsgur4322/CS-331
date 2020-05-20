@@ -6,7 +6,7 @@ Youngjoo Lee, leey3@oregonstate.edu
 
 1. To compile the python files in this repository, you should set up virtual environment first with below commands
 
-cd ~/CS-434
+cd ~/CS-331
 bash
 virtualenv venv -p $(which python3)
 source ./venv/bin/activate
